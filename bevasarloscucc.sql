@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2024. Már 05. 13:38
+-- Létrehozás ideje: 2024. Már 05. 13:58
 -- Kiszolgáló verziója: 10.4.6-MariaDB
 -- PHP verzió: 7.3.8
 
@@ -21,6 +21,19 @@ SET time_zone = "+00:00";
 --
 -- Adatbázis: `bevasarloscucc`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `lista`
+--
+
+CREATE TABLE `lista` (
+  `id` int(11) NOT NULL,
+  `name` varchar(30) COLLATE utf8_hungarian_ci NOT NULL,
+  `product` int(11) NOT NULL,
+  `count` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------
 
@@ -146,6 +159,13 @@ INSERT INTO `termekek` (`id`, `category`, `productname`, `price`) VALUES
 --
 
 --
+-- A tábla indexei `lista`
+--
+ALTER TABLE `lista`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product` (`product`);
+
+--
 -- A tábla indexei `termekek`
 --
 ALTER TABLE `termekek`
@@ -156,10 +176,28 @@ ALTER TABLE `termekek`
 --
 
 --
+-- AUTO_INCREMENT a táblához `lista`
+--
+ALTER TABLE `lista`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT a táblához `termekek`
 --
 ALTER TABLE `termekek`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+
+--
+-- Megkötések a kiírt táblákhoz
+--
+
+--
+-- Megkötések a táblához `lista`
+--
+ALTER TABLE `lista`
+  ADD CONSTRAINT `lista_ibfk_1` FOREIGN KEY (`product`) REFERENCES `termekek` (`ID`),
+  ADD CONSTRAINT `lista_ibfk_2` FOREIGN KEY (`product`) REFERENCES `termekek` (`ID`),
+  ADD CONSTRAINT `lista_ibfk_3` FOREIGN KEY (`product`) REFERENCES `termekek` (`ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
