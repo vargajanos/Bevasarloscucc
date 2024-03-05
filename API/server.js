@@ -24,12 +24,12 @@ app.get('/', function (req, res) {
 //      Endpoints
 // --------------------
 
-// Employees table
+// termekek table
 // ------------------------------
 
-// GET all employees
-app.get("/employees", (req, res)=>{
-    pool.query('SELECT * FROM employees', (error, results)=>{
+// GET all termekek
+app.get("/termekek", (req, res)=>{
+    pool.query('SELECT * FROM termekek', (error, results)=>{
         if (error) throw res.send(error);
         
         res.send(results)
@@ -37,9 +37,9 @@ app.get("/employees", (req, res)=>{
 })
 
 // GET one employee by PK
-app.get("/employees/:pk", (req, res)=>{
+app.get("/termekek/:pk", (req, res)=>{
     let pk = req.params.pk
-    pool.query(`SELECT * FROM employees WHERE ID=?`, pk, (error, results)=>{
+    pool.query(`SELECT * FROM termekek WHERE ID=?`, pk, (error, results)=>{
         if (error) throw res.send(error);
         
         res.send(results)
@@ -47,9 +47,9 @@ app.get("/employees/:pk", (req, res)=>{
 })
 
 // POST new employee
-app.post("/employees", (req, res)=>{
+app.post("/termekek", (req, res)=>{
     let data  = req.body
-    pool.query(`INSERT INTO employees VALUES(null, "${data.name}", "${data.address}", "${data.phone}", "${data.email}", "${data.post}", ${data.price})`, (error, results)=>{
+    pool.query(`INSERT INTO termekek VALUES(null, "${data.name}", "${data.address}", "${data.phone}", "${data.email}", "${data.post}", ${data.price})`, (error, results)=>{
         if (error) throw res.status(500).send(error);
         
         res.status(200).send(results)
@@ -58,10 +58,10 @@ app.post("/employees", (req, res)=>{
 })
 
 // PATCH one employee by PK
-app.patch("/employees/:pk", (req, res)=>{
+app.patch("/termekek/:pk", (req, res)=>{
     let pk = req.params.pk
     let data  = req.body
-    pool.query(`UPDATE employees SET name="${data.name}", address="${data.address}", phone="${data.phone}", email="${data.email}", post="${data.post}", price=${data.price} WHERE ID=?`, pk, (error, results)=>{
+    pool.query(`UPDATE termekek SET name="${data.name}", address="${data.address}", phone="${data.phone}", email="${data.email}", post="${data.post}", price=${data.price} WHERE ID=?`, pk, (error, results)=>{
         if (error) throw res.status(500).send(error)
         res.status(200).send(results)
     });
@@ -69,9 +69,9 @@ app.patch("/employees/:pk", (req, res)=>{
 })
 
 // DELETE one employee by PK
-app.delete("/employees/:pk", (req, res)=>{
+app.delete("/termekek/:pk", (req, res)=>{
     let pk = req.params.pk
-    pool.query(`DELETE FROM employees WHERE ID=?`, pk, (error, results)=>{
+    pool.query(`DELETE FROM termekek WHERE ID=?`, pk, (error, results)=>{
         if (error) throw res.send(error);
         
         res.send(results)
