@@ -37,7 +37,7 @@ app.get("/termekek", cors(), (req, res)=>{
     });
 })
 
-// GET one termekek by category
+// GET termekek by category
 app.get("/termekek/:pk", cors(), (req, res)=>{
     let pk = req.params.pk
     pool.query(`SELECT * FROM termekek WHERE category=?`, pk, (error, results)=>{
@@ -59,8 +59,14 @@ app.get("/lista", cors(), (req, res)=>{
 })
 
 // GET egy lista
-app.get("/kapcsolo/:pk", cors(), (req, res)=>{
+app.get("/lista/:pk", cors(), (req, res)=>{
     let pk = req.params.pk
+    pool.query(`SELECT * FROM lista WHERE id=?`, pk, (error, results)=>{
+        if (error) throw res.send(error);
+        
+        res.send(results)
+    });
+
     pool.query(`SELECT * FROM kapcsolo WHERE lista_id=?`, pk, (error, results)=>{
         if (error) throw res.send(error);
         
@@ -76,10 +82,15 @@ app.post("/lista", cors(), (req, res)=>{
         
         res.status(200).send(results)
     });
+    pool.query(`INSERT INTO kapcsolo (id, list_id, termek_id, count) VALUES(NULL, "${data.name}")`, (error, results)=>{
+        if (error) throw res.status(500).send(error);
+        
+        res.status(200).send(results)
+    });
 
 })
 
-// PATCH one employee by PK
+// PATCH lista
 app.patch("/termekek/:pk", (req, res)=>{
     let pk = req.params.pk
     let data  = req.body
