@@ -14,28 +14,28 @@
         <div class="menu">
 
             <div class="kategoria">
-                <select name="kategoria" id="kategoria">
-                    
+                <select name="kategoria" id="kategoria" onchange="termekekdropdownfeltoltes()">
+                    <option value="empty">Válassz</option>
                 </select>
             </div>
             
             <div class="termek">
-                <select name="termek" id="termek">
-                    
+                <select name="termek" id="termek" onchange="arfeltoltes()">
+                    <option value="empty">Válassz</option>
                 </select>
             </div>
 
             <div class="mennyiseg">
-                <input type="number" min="1" value="1">
+                <input id="mennyiseg" type="number" min="1" value="1" onchange="arfeltoltes()">
             </div>
 
             <div class="egysegér">  
-                <output type="number"> asd</output> 
+                <output type="number" id="egysegar"> Még nincs termék</output> 
             </div>
 
 
             <div class="összes">  
-                <output type="number"> asd</output>
+                <output type="number" id="osszes"> Még nincs termék</output>
             </div>
 
             <button class="hozzaad" id="hozzaad">+</button>
