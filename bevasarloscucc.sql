@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2024. Már 06. 09:19
+-- Létrehozás ideje: 2024. Már 06. 09:38
 -- Kiszolgáló verziója: 10.4.6-MariaDB
 -- PHP verzió: 7.3.8
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `kapcsolo` (
+  `id` int(11) NOT NULL,
   `lista_id` int(11) NOT NULL,
   `termek_id` int(11) NOT NULL,
   `count` int(11) NOT NULL
@@ -38,9 +39,9 @@ CREATE TABLE `kapcsolo` (
 -- A tábla adatainak kiíratása `kapcsolo`
 --
 
-INSERT INTO `kapcsolo` (`lista_id`, `termek_id`, `count`) VALUES
-(1, 1, 1),
-(1, 2, 2);
+INSERT INTO `kapcsolo` (`id`, `lista_id`, `termek_id`, `count`) VALUES
+(1, 1, 1, 1),
+(2, 1, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -189,6 +190,7 @@ INSERT INTO `termekek` (`id`, `category`, `productname`, `price`) VALUES
 -- A tábla indexei `kapcsolo`
 --
 ALTER TABLE `kapcsolo`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `lista_id` (`lista_id`),
   ADD KEY `termek_id` (`termek_id`);
 
@@ -207,6 +209,12 @@ ALTER TABLE `termekek`
 --
 -- A kiírt táblák AUTO_INCREMENT értéke
 --
+
+--
+-- AUTO_INCREMENT a táblához `kapcsolo`
+--
+ALTER TABLE `kapcsolo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT a táblához `lista`
