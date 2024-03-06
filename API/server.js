@@ -27,7 +27,7 @@ app.get('/', function (req, res) {
 // termekek table
 // ------------------------------
 
-// GET all termekek
+// GET összes termék
 app.get("/termekek", (req, res)=>{
     pool.query('SELECT * FROM termekek', (error, results)=>{
         if (error) throw res.send(error);
@@ -36,17 +36,29 @@ app.get("/termekek", (req, res)=>{
     });
 })
 
-// GET one employee by PK
+// GET one termekek by category
 app.get("/termekek/:pk", (req, res)=>{
     let pk = req.params.pk
-    pool.query(`SELECT * FROM termekek WHERE ID=?`, pk, (error, results)=>{
+    pool.query(`SELECT * FROM termekek WHERE category=?`, pk, (error, results)=>{
         if (error) throw res.send(error);
         
         res.send(results)
     });
 })
 
-// POST new employee
+
+// lista table
+// ------------------------------
+
+// GET összes lista
+app.get("/lista", (req, res)=>{
+    pool.query('SELECT * FROM lista', (error, results)=>{
+        if (error) throw res.send(error);
+        res.send(results)
+    });
+})
+
+// POST new lista
 app.post("/termekek", (req, res)=>{
     let data  = req.body
     pool.query(`INSERT INTO termekek VALUES(null, "${data.name}", "${data.address}", "${data.phone}", "${data.email}", "${data.post}", ${data.price})`, (error, results)=>{
