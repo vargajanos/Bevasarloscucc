@@ -1,6 +1,7 @@
 require("dotenv").config()
 var mysql = require('mysql');
 const express = require('express')
+const cors = require('cors')
 const app = express()
 const port = process.env.PORT
 
@@ -28,7 +29,7 @@ app.get('/', function (req, res) {
 // ------------------------------
 
 // GET összes termék
-app.get("/termekek", (req, res)=>{
+app.get("/termekek", cors(), (req, res)=>{
     pool.query('SELECT * FROM termekek', (error, results)=>{
         if (error) throw res.send(error);
         
@@ -37,7 +38,7 @@ app.get("/termekek", (req, res)=>{
 })
 
 // GET one termekek by category
-app.get("/termekek/:pk", (req, res)=>{
+app.get("/termekek/:pk", cors(), (req, res)=>{
     let pk = req.params.pk
     pool.query(`SELECT * FROM termekek WHERE category=?`, pk, (error, results)=>{
         if (error) throw res.send(error);
@@ -46,12 +47,11 @@ app.get("/termekek/:pk", (req, res)=>{
     });
 })
 
-
 // lista table
 // ------------------------------
 
 // GET összes lista
-app.get("/lista", (req, res)=>{
+app.get("/lista", cors(), (req, res)=>{
     pool.query('SELECT * FROM lista', (error, results)=>{
         if (error) throw res.send(error);
         res.send(results)
@@ -59,7 +59,7 @@ app.get("/lista", (req, res)=>{
 })
 
 // GET egy lista
-app.get("/kapcsolo/:pk", (req, res)=>{
+app.get("/kapcsolo/:pk", cors(), (req, res)=>{
     let pk = req.params.pk
     pool.query(`SELECT * FROM kapcsolo WHERE lista_id=?`, pk, (error, results)=>{
         if (error) throw res.send(error);
@@ -69,7 +69,7 @@ app.get("/kapcsolo/:pk", (req, res)=>{
 })
 
 // POST új lista
-app.post("/lista", (req, res)=>{
+app.post("/lista", cors(), (req, res)=>{
     let data  = req.body
     pool.query(`INSERT INTO lista (id, name) VALUES(NULL, "${data.name}")`, (error, results)=>{
         if (error) throw res.status(500).send(error);
