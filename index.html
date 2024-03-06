@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu" ng-app="bevasarlas">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,8 +9,73 @@
     <title>Bevásárló lista</title>
 </head>
 <body>
-    
+    <div class="container">
+        <h1>Bevásárló lista</h1>
+        <div class="menu">
 
+            <div class="kategoria">
+                <select name="kategoria" id="kategoria">
+                    
+                </select>
+            </div>
+            
+            <div class="termek">
+                <select name="termek" id="termek">
+                    
+                </select>
+            </div>
+
+            <div class="mennyiseg">
+                <input type="number" min="1" value="1">
+            </div>
+
+            <div class="egysegér">  
+                <output type="number"> asd</output> 
+            </div>
+
+
+            <div class="összes">  
+                <output type="number"> asd</output>
+            </div>
+
+            <button class="hozzaad" id="hozzaad">+</button>
+
+        </div>
+
+        <h2 class="listah2">Lista</h2>
+
+        <div style="overflow-x:auto;">
+            <table id="tablazat">
+                <thead>
+                    <tr>
+                        <th>Kategoria</th>
+                        <th>Termék</th>
+                        <th>Mennyiség</th>
+                        <th>Egységár</th>
+                        <th>Összesen</th>
+                        <th>Műveletek</th>
+                    </tr>
+                </thead>
+                <tbody id="lista">
+                    
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+    <div class="gomboklent">
+        <button>Lista törlése</button>
+
+        <button>Mentés</button>
+
+        <label for="">Fizetendő:</label>
+
+        <output>asd</output> 
+
+
+    </div>
 
 
     <script src="js/angular.min.js"></script>
