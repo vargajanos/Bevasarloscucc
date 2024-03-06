@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2024. Már 06. 08:39
+-- Létrehozás ideje: 2024. Már 06. 09:19
 -- Kiszolgáló verziója: 10.4.6-MariaDB
 -- PHP verzió: 7.3.8
 
@@ -30,8 +30,17 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `kapcsolo` (
   `lista_id` int(11) NOT NULL,
-  `termek_id` int(11) NOT NULL
+  `termek_id` int(11) NOT NULL,
+  `count` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `kapcsolo`
+--
+
+INSERT INTO `kapcsolo` (`lista_id`, `termek_id`, `count`) VALUES
+(1, 1, 1),
+(1, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -41,9 +50,17 @@ CREATE TABLE `kapcsolo` (
 
 CREATE TABLE `lista` (
   `id` int(11) NOT NULL,
-  `name` varchar(30) COLLATE utf8_hungarian_ci NOT NULL,
-  `count` int(11) NOT NULL
+  `name` varchar(30) COLLATE utf8_hungarian_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `lista`
+--
+
+INSERT INTO `lista` (`id`, `name`) VALUES
+(1, 'Spar'),
+(2, 'LIDL'),
+(3, 'Aldi');
 
 -- --------------------------------------------------------
 
@@ -186,6 +203,22 @@ ALTER TABLE `lista`
 --
 ALTER TABLE `termekek`
   ADD PRIMARY KEY (`id`);
+
+--
+-- A kiírt táblák AUTO_INCREMENT értéke
+--
+
+--
+-- AUTO_INCREMENT a táblához `lista`
+--
+ALTER TABLE `lista`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT a táblához `termekek`
+--
+ALTER TABLE `termekek`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- Megkötések a kiírt táblákhoz

@@ -58,10 +58,20 @@ app.get("/lista", (req, res)=>{
     });
 })
 
-// POST new lista
-app.post("/termekek", (req, res)=>{
+// GET egy lista
+app.get("/kapcsolo/:pk", (req, res)=>{
+    let pk = req.params.pk
+    pool.query(`SELECT * FROM kapcsolo WHERE lista_id=?`, pk, (error, results)=>{
+        if (error) throw res.send(error);
+        
+        res.send(results)
+    });
+})
+
+// POST új lista
+app.post("/lista", (req, res)=>{
     let data  = req.body
-    pool.query(`INSERT INTO termekek VALUES(null, "${data.name}", "${data.address}", "${data.phone}", "${data.email}", "${data.post}", ${data.price})`, (error, results)=>{
+    pool.query(`INSERT INTO lista (id, name) VALUES(NULL, "${data.name}")`, (error, results)=>{
         if (error) throw res.status(500).send(error);
         
         res.status(200).send(results)
