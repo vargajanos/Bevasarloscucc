@@ -61,28 +61,18 @@ app.get("/lista", cors(), (req, res)=>{
 // GET egy lista
 app.get("/lista/:pk", cors(), (req, res)=>{
     let pk = req.params.pk
-    pool.query(`SELECT * FROM lista WHERE id=?`, pk, (error, results)=>{
+    pool.query(`SELECT * FROM kapcsolo JOIN lista ON ? = kapcsolo.lista_id`, pk, (error, results)=>{
         if (error) throw res.send(error);
         
         res.send(results)
     });
 
-    pool.query(`SELECT * FROM kapcsolo WHERE lista_id=?`, pk, (error, results)=>{
-        if (error) throw res.send(error);
-        
-        res.send(results)
-    });
 })
 
 // POST új lista
 app.post("/lista", cors(), (req, res)=>{
     let data  = req.body
     pool.query(`INSERT INTO lista (id, name) VALUES(NULL, "${data.name}")`, (error, results)=>{
-        if (error) throw res.status(500).send(error);
-        
-        res.status(200).send(results)
-    });
-    pool.query(`INSERT INTO kapcsolo (id, list_id, termek_id, count) VALUES(NULL, "${data.name}")`, (error, results)=>{
         if (error) throw res.status(500).send(error);
         
         res.status(200).send(results)
