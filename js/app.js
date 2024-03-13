@@ -8,26 +8,20 @@ let tablazat = document.querySelector('#lista');
 app.run(function($rootScope){
 
     $rootScope.hozzadotTermek = [];
-
-    $rootScope.termekek = [];
+    
+    $rootScope.ossz_termekek = [];
     $rootScope.egyedikategoria =[];
     $rootScope.prodcut = [];
     $rootScope.mennyisegValue = 1;
 
     axios.get('http://localhost:3000/termekek').then(res => {
-        $rootScope.termekek = res.data;
-    
-
-        $rootScope.termekek.forEach(termek => {
-             
+        $rootScope.ossz_termekek = res.data;
+        $rootScope.ossz_termekek.forEach(termek => {
             if (!$rootScope.egyedikategoria.includes(termek.category)) {
                 $rootScope.egyedikategoria.push(termek.category);
                    
             }
         });
-
-       
-    
         $rootScope.$apply();
     }); 
 
@@ -35,13 +29,12 @@ app.run(function($rootScope){
     $rootScope.termekekdropdownfeltoltes = function(){
         $rootScope.removeOptions(termekekdropdown);
     
-        
         let selectedCategory = kategoria.value;
     
-        axios.get(`http://localhost:3000/termekek/${selectedCategory}`)
+        axios.get(`http://localhost:3000/termekek/category/${selectedCategory}`)
         .then(response => {
             
-            if (response.status === 200) {
+            if (response.status == 200) {
                 $rootScope.prodcut = []
                 response.data.forEach(element => {
                     $rootScope.prodcut.push(element)
@@ -50,7 +43,7 @@ app.run(function($rootScope){
                 console.log($rootScope.prodcut)
                 
                  
-                
+                /*
                 if ($rootScope.prodcut && $rootScope.prodcut.length > 0) {
                     $rootScope.prodcut.forEach(product => {
                         
@@ -62,7 +55,7 @@ app.run(function($rootScope){
                 } else {
                     console.log("No products found for the selected category.");
                 }
- 
+                */
                  
             } else {
                 console.log("Failed to retrieve data from the server.");
@@ -107,7 +100,7 @@ app.run(function($rootScope){
         console.log("Item:", item);
         console.log("Products:", $rootScope.prodcut);
     
-        let product = $rootScope.termekek.find(p => {
+        let product = $rootScope.ossz_termekek.find(p => {
             console.log("Comparing:", p.id, item.id);
             return p.id == item.id;
         });
