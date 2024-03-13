@@ -14,20 +14,26 @@
         <div class="menu">
 
             <div class="kategoria">
-                <select name="kategoria" id="kategoria" ng-change="termekekdropdownfeltoltes()">
+                <select name="kategoria" id="kategoria" ng-model="selectedCategory" ng-change="termekekdropdownfeltoltes()" ng-change="arfeltoltes()">
                     <option ng-repeat="termek in egyedikategoria" value="{{termek}}">{{termek}}</option>
                 </select>
+                
             </div>
             
             <div class="termek">
-                <select name="termek" id="termek">
-                    <option ng-repeat="termek in prodcut" value="{{termek.productname}}">{{termek.productname}}</option>
+                <select name="termek" id="termek" ng-model="selectedProduct" ng-change="arfeltoltes()">
+                    <option ng-repeat="termek in prodcut" value="{{termek.id}}">{{termek.productname}}</option>
                 </select>
             </div>
+            
 
             <div class="mennyiseg">
-                <input id="mennyiseg" type="number" min="1" value="1" onchange="arfeltoltes()">
+                
+                <input id="mennyiseg" type="number" min="1" ng-model="mennyisegValue" ng-change="arfeltoltes()">
             </div>
+            
+            
+        
 
             <div class="egysegér">  
                 <output type="number" id="egysegar"> Még nincs termék</output> 
@@ -38,7 +44,8 @@
                 <output type="number" id="osszes"> Még nincs termék</output>
             </div>
 
-            <button class="hozzaad" id="hozzaad" onclick="tablazattoltes()">+</button>
+            <button class="hozzaad" id="hozzaad" ng-click="tablazattoltes()">+</button>
+
 
         </div>
 
@@ -48,7 +55,7 @@
             <table id="tablazat">
                 <thead>
                     <tr>
-                        <th>Kategoria</th>
+                        <th>Kategória</th>
                         <th>Termék</th>
                         <th>Mennyiség</th>
                         <th>Egységár</th>
@@ -57,14 +64,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <tr ng-repeat="item in hozzadotTermek">
+                        <td>{{ item.category }}</td>
+                        <td>{{ item.termek }}</td>
+                        <td><input type="number" min="1" ng-model="item.mennyiseg" ng-change="updatePrice(item)"></td>
+                        <td>{{ item.ar }}</td>
+                        <td>{{ item.osszeg }}</td>
+                        <td>
+                            <button class="delete" ng-click="removeItem($index)">Delete</button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
+            
         </div>
 
     </div>
