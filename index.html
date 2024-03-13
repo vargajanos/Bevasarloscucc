@@ -13,17 +13,18 @@
         <h1>Bevásárló lista</h1>
         <div class="menu">
 
+
             <div class="kategoria">
-                <select name="kategoria" id="kategoria" ng-model="selectedCategory" ng-change="termekekdropdownfeltoltes()" ng-change="arfeltoltes()">
+                <select name="kategoria" id="kategoria" ng-model="selectedCategory" ng-change="termekekdropdownfeltoltes()">
                     <option ng-repeat="termek in egyedikategoria" value="{{termek}}">{{termek}}</option>
                 </select>
                 
             </div>
             
             <div class="termek">
-                <select name="termek" id="termek" ng-model="selectedProduct" ng-change="arfeltoltes()">
-                    <option ng-repeat="termek in prodcut" value="{{termek.id}}">{{termek.productname}}</option>
-                </select>
+            <select name="termek" id="termek" ng-model="selectedProduct" ng-change-manual>
+                <option ng-repeat="termek in prodcut" value="{{termek.id}}">{{termek.productname}}</option>
+            </select>
             </div>
             
 
@@ -83,15 +84,15 @@
 
 
     <div class="gomboklent">
-        <button>Lista törlése</button>
-
-        <button>Mentés</button>
-
-        <label for="">Fizetendő:</label>
-
-        <output>asd</output> 
+        <button ng-click="ListaTorlese()">Lista törlése</button>
 
 
+        <button ng-click="ListaMentesAdatbazisba()">Mentés</button>
+
+
+        <label for="fizetendo">Fizetendő:</label>
+        <output id="fizetendo">{{ OsszesSzamitas() }} Ft</output>
+        
     </div>
 
 

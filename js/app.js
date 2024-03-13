@@ -2,7 +2,9 @@ var app = angular.module('bevasarlas', ['ngRoute']);
 let kategoria = document.querySelector('#kategoria');
 let termekekdropdown = document.querySelector('#termek');
 let tablazat = document.querySelector('#lista');
-
+let mennyiseg = document.querySelector('#mennyiseg');
+let egysegar = document.querySelector('#egysegar');
+let osszes = document.querySelector('#osszes');
 
 
 app.run(function($rootScope){
@@ -13,6 +15,7 @@ app.run(function($rootScope){
     $rootScope.egyedikategoria =[];
     $rootScope.prodcut = [];
     $rootScope.mennyisegValue = 1;
+
 
     axios.get('http://localhost:3000/termekek').then(res => {
         $rootScope.ossz_termekek = res.data;
@@ -26,6 +29,8 @@ app.run(function($rootScope){
     }); 
 
 
+    
+
     $rootScope.termekekdropdownfeltoltes = function(){
         $rootScope.removeOptions(termekekdropdown);
     
@@ -38,34 +43,23 @@ app.run(function($rootScope){
                 $rootScope.prodcut = []
                 response.data.forEach(element => {
                     $rootScope.prodcut.push(element)
+
                 });
                 
-                console.log($rootScope.prodcut)
                 
-                 
-                /*
-                if ($rootScope.prodcut && $rootScope.prodcut.length > 0) {
-                    $rootScope.prodcut.forEach(product => {
+                
+                $rootScope.prodcut.forEach(product => {
                         
-                        let option = document.createElement("option");
-                        option.value = product.id;
-                        option.text = product.productname;
-                        termekekdropdown.appendChild(option);
-                    });
-                } else {
-                    console.log("No products found for the selected category.");
-                }
-                */
-                 
-            } else {
-                console.log("Failed to retrieve data from the server.");
+                    let option = document.createElement("option");
+                    option.value = product.id;
+                    option.text = product.productname;
+                    termekekdropdown.appendChild(option);
+                });
+
+                $rootScope.arfeltoltes();
             }
         })
-        .catch(error => {
-            
-            console.error("Error fetching data:", error);
-        });
-    };
+    
     
 
 
@@ -75,15 +69,9 @@ app.run(function($rootScope){
 
     $rootScope.arfeltoltes = function() {
         
-        let termekdropdown = document.querySelector('#termek');
-        let mennyiseg = document.querySelector('#mennyiseg');
-        let egysegar = document.querySelector('#egysegar');
-        let osszes = document.querySelector('#osszes');
-    
         let index = termekekdropdown.selectedIndex;
 
-
-        let selectedProduct = termekdropdown.options[index].text;
+        let selectedProduct = termekekdropdown.options[index].text;
         let selectedProductObject = $rootScope.prodcut.find(product => product.productname === selectedProduct);
     
         if (selectedProductObject) {
@@ -97,42 +85,28 @@ app.run(function($rootScope){
     }
     
    $rootScope.updatePrice = function(item) {
-        console.log("Item:", item);
-        console.log("Products:", $rootScope.prodcut);
+
     
-        let product = $rootScope.ossz_termekek.find(p => {
-            console.log("Comparing:", p.id, item.id);
+        let product = $rootScope.termekek.find(p => {
+
+
             return p.id == item.id;
         });
     
-        if (product) {
             item.ar = product.price;
             item.osszeg = item.mennyiseg * product.price;
-        } else {
-            console.log("Product not found:", item.id);
-        }
+
     };
     
-    
-    
-    
-    
-
     $rootScope.tablazattoltes = function() {
-        let kategoriadropdown = document.querySelector('#kategoria');
-        let termekdropdown = document.querySelector('#termek');
-        let mennyiseg = document.querySelector('#mennyiseg');
-        let egysegar = document.querySelector('#egysegar');
-        let osszes = document.querySelector('#osszes');
-    
-        
+
         let index = termekekdropdown.selectedIndex;
 
         let newItem = {
-            id: termekdropdown.value,
+            id: termekekdropdown.value,
 
-            category: kategoriadropdown.value,
-            termek: termekdropdown.options[index].text,
+            category: kategoria.value,
+            termek: termekekdropdown.options[index].text,
             mennyiseg: parseInt(mennyiseg.value),
             ar: egysegar.innerText,
             osszeg: osszes.innerText
@@ -141,13 +115,55 @@ app.run(function($rootScope){
         $rootScope.hozzadotTermek.push(newItem);
     }
 
+    $rootScope.OsszesSzamitas = function() {
+        let total = 0;
+        $rootScope.hozzadotTermek.forEach(function(item) {
+            total += parseFloat(item.osszeg);
+        });
+        return total;
+    };
+    
 
     $rootScope.removeItem = function(index) {
         $rootScope.hozzadotTermek.splice(index, 1);
         $rootScope.arfeltoltes(); 
     }
+    $rootScope.ListaTorlese = function() {
+        $rootScope.hozzadotTermek = [];
+    };
     
 
+    $rootScope.ListaMentesAdatbazisba = function() {
+        
+        let data = {
+            items: $rootScope.hozzadotTermek 
+        };
+    
+        
+        axios.post('http://localhost:3000/lista', data)
+            .then(function(response) {
+                
+                console.log("Data saved successfully:", response.data);
+                
+                $rootScope.hozzadotTermek = [];
+                
+            })
+            .catch(function(error) {
+
+                console.error("Error saving data:", error);
+            });
+    };
+    
+}});
+
+app.directive('ngChangeManual', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            element.on('change', function() {
+                scope.arfeltoltes();
+            });
+        }
+    };
 });
 
- 
