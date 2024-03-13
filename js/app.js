@@ -135,7 +135,11 @@ app.run(function($rootScope){
         $rootScope.hozzadotTermek.splice(index, 1);
         $rootScope.arfeltoltes(); 
     }
+    $rootScope.ListaTorlese = function() {
+        $rootScope.hozzadotTermek = [];
+    };
     
+
     $rootScope.ListaMentesAdatbazisba = function() {
         
         let data = {
