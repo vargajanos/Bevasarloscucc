@@ -37,10 +37,13 @@ app.get("/termekek", cors(), (req, res)=>{
     });
 })
 
-// GET termekek by category
-app.get("/termekek/:pk", cors(), (req, res)=>{
-    let pk = req.params.pk
-    pool.query(`SELECT * FROM termekek WHERE category=?`, pk, (error, results)=>{
+// GET table by column
+app.get("/:table/:column/:find", cors(), (req, res)=>{
+    let column = req.params.column
+    let find = req.params.find
+    let table = req.params.table
+
+    pool.query(`SELECT * FROM ${table} WHERE ${column}="${find}"`, (error, results)=>{
         if (error) throw res.send(error);
         
         res.send(results)
@@ -61,17 +64,12 @@ app.get("/lista", cors(), (req, res)=>{
 // GET egy lista
 app.get("/lista/:pk", cors(), (req, res)=>{
     let pk = req.params.pk
-    pool.query(`SELECT * FROM lista WHERE id=?`, pk, (error, results)=>{
+    pool.query(`SELECT * FROM kapcsolo JOIN lista ON kapcsolo.lista_id = lista.id WHERE kapcsolo.lista_id = ?`, pk, (error, results)=>{
         if (error) throw res.send(error);
         
         res.send(results)
     });
 
-    pool.query(`SELECT * FROM kapcsolo WHERE lista_id=?`, pk, (error, results)=>{
-        if (error) throw res.send(error);
-        
-        res.send(results)
-    });
 })
 
 // POST új lista
@@ -82,67 +80,24 @@ app.post("/lista", cors(), (req, res)=>{
         
         res.status(200).send(results)
     });
-    pool.query(`INSERT INTO kapcsolo (id, list_id, termek_id, count) VALUES(NULL, "${data.name}")`, (error, results)=>{
-        if (error) throw res.status(500).send(error);
-        
-        res.status(200).send(results)
-    });
 
 })
 
-// PATCH lista
-app.patch("/termekek/:pk", (req, res)=>{
+// POST lista elemeit 
+app.post("/lista/:pk", (req, res)=>{
     let pk = req.params.pk
     let data  = req.body
-    pool.query(`UPDATE termekek SET name="${data.name}", address="${data.address}", phone="${data.phone}", email="${data.email}", post="${data.post}", price=${data.price} WHERE ID=?`, pk, (error, results)=>{
+    pool.query(`INSERT INTO kapcsolo (id, lista_id, termek_id, count) VALUES(NULL, "${pk}", "${data.termek_id}", "${data.count}")`, (error, results)=>{
         if (error) throw res.status(500).send(error)
         res.status(200).send(results)
     });
 
 })
 
-// DELETE one employee by PK
-app.delete("/termekek/:pk", (req, res)=>{
+// DELETE lista tartalma by PK
+app.delete("/lista/:pk", (req, res)=>{
     let pk = req.params.pk
-    pool.query(`DELETE FROM termekek WHERE ID=?`, pk, (error, results)=>{
-        if (error) throw res.send(error);
-        
-        res.send(results)
-    });
-})
-
-
-// Worktimes table
-// ------------------------------
-// GET all worktimes
-app.get("/worktimes", (req, res)=>{
-    pool.query('SELECT * FROM worktimes', (error, results)=>{
-        if (error) throw res.send(error);
-        
-        res.send(results)
-    });
-})
-
-// GET all worktimes Between dates
-
-// GET all worktimes by employee (ID)
-app.get("/worktimes/:employee", (req, res)=>{
-    let employee = req.params.employee
-    pool.query(`SELECT * FROM worktimes WHERE ID=?`, employee, (error, results)=>{
-        if (error) throw res.send(error);
-        
-        res.send(results)
-    });
-})
-
-// GET all worktimes by employee between dates
-
-// POST new worktimes
-// PATCH one worktime by PK
-// DELETE one worktime by PK
-app.delete("/worktimes/:pk", (req, res)=>{
-    let pk = req.params.pk
-    pool.query(`DELETE FROM worktimes WHERE ID=?`, pk, (error, results)=>{
+    pool.query(`DELETE FROM kapcsolo WHERE lista_id=?`, pk, (error, results)=>{
         if (error) throw res.send(error);
         
         res.send(results)
