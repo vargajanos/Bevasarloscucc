@@ -10,57 +10,59 @@
 </head>
 <body>
     <div class="container">
-        <h1>Bevásárló lista</h1>
-        <div class="menu">
-
-
-            <div class="kategoria">
-                <select name="kategoria" id="kategoria" ng-model="selectedCategory" ng-change="termekekdropdownfeltoltes()">
+        <div class="container d-flex justify-content-center m-5">
+            <h1>Bevásárló lista</h1>
+        </div>
+        <div class="menu container d-flex flex-row justify-content-between align-items-center">
+            <div class="container d-flex flex-column">
+                <p>Kategória</p>
+                <select class="form-select" aria-label="Default select example" id="kategoria" ng-model="selectedCategory" ng-change="termekekdropdownfeltoltes()">
                     <option ng-repeat="termek in egyedikategoria" value="{{termek}}">{{termek}}</option>
                 </select>
-                
             </div>
-            
-            <div class="termek">
-            <select name="termek" id="termek" ng-model="selectedProduct" ng-change-manual>
-                <option ng-repeat="termek in prodcut" value="{{termek.id}}">{{termek.productname}}</option>
-            </select>
-            </div>
-            
 
-            <div class="mennyiseg">
-                <input id="mennyiseg" type="number" min="1" ng-model="mennyisegValue" ng-change="arfeltoltes()">
+            <div class="container d-flex flex-column">
+                <p>Termék</p>
+                <select class="form-select" aria-label="Default select example" id="termek" ng-model="selectedProduct" ng-change-manual>
+                    <!--<option ng-repeat="termek in prodcut" value="{{termek.id}}">{{termek.productname}}</option>-->
+                </select>
             </div>
             
             
-            
-            
+            <div class="container d-flex flex-column">
+                <p>Mennyiség</p>
+                <input class="form-control" id="mennyiseg" type="number" min="1" ng-model="mennyisegValue" ng-change="arfeltoltes()">
+            </div>
 
-            <div class="egysegér">  
+            <div class="egysegér m-3 container d-flex flex-column"> 
+                <p>Egységár</p> 
                 <output type="number" id="egysegar"> Még nincs termék</output> 
             </div>
 
 
-            <div class="összes">  
+            <div class="összes m-3 container d-flex flex-column">
+                <p>Összesen</p>
                 <output type="number" id="osszes"> Még nincs termék</output>
             </div>
 
-            <button class="hozzaad" id="hozzaad" ng-click="tablazattoltes()">+</button>
-            lista
-
+            <div >
+                <button type="button" class="btn btn-primary hozzaad" id="hozzaad" ng-click="tablazattoltes()">+</button>
+            </div>
         </div>
 
         
-        <div>
-            <h2 class="listah2">Lista</h2>
-            <select name="listak" id="listak">
+        <div class="m-3 container d-flex flex-row justify-content-center align-items-center ">
+            <h1 class="">Lista:</h1>
+
+            <select class="form-select m-3" aria-label="Default select example" name="listak" id="listak">
                 <option ng-repeat="x in listak" value="{{x.id}}">{{x.name}}</option>
             </select>
-            <button ng-click="load_list()">Load</button>
+
+            <button type="button" class="btn btn-primary" ng-click="load_list()">Load</button>
         </div>
 
         <div style="overflow-x:auto;">
-            <table id="tablazat">
+            <table class="table" id="tablazat">
                 <thead>
                     <tr>
                         <th>Kategória</th>
@@ -75,11 +77,11 @@
                     <tr ng-repeat="item in hozzadotTermek">
                         <td>{{ item.category }}</td>
                         <td>{{ item.termek }}</td>
-                        <td><input type="number" min="1" ng-model="item.mennyiseg" ng-change="updatePrice(item)"></td>
+                        <td><input class="form-control table_input" type="number" min="1" ng-model="item.mennyiseg" ng-change="updatePrice(item)"></td>
                         <td>{{ item.ar }}</td>
                         <td>{{ item.osszeg }}</td>
                         <td>
-                            <button class="delete" ng-click="removeItem($index)">Delete</button>
+                            <button type="button" class="btn btn-danger delete" ng-click="removeItem($index)">Delete</button>
                         </td>
                     </tr>
                 </tbody>
@@ -90,11 +92,11 @@
     </div>
 
 
-    <div class="gomboklent">
-        <button ng-click="ListaTorlese()">Lista törlése</button>
+    <div class="gomboklent mb-5">
+        <button type="button" class="btn btn-danger" ng-click="ListaTorlese()">Lista törlése</button>
 
         <input id="list_name" type="text">
-        <button ng-click="ListaMentesAdatbazisba()">Mentés</button>
+        <button type="button" class="btn btn-primary" ng-click="ListaMentesAdatbazisba()">Mentés</button>
 
 
         <label for="fizetendo">Fizetendő:</label>

@@ -1,13 +1,23 @@
-
+body{
+    background-image: url(../img/bg.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
 .menu
 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px; 
-    margin: 20px 0; 
+    background-color: #a394fc;
+    border-radius: 10px;
+}
+
+output, label{
+    background-color: white;
+    padding: 7px;
+    border-radius: 5px;
+}
+
+select{
+    max-width: 300px;
 }
 
 .listah2{
@@ -36,4 +46,8 @@ th, td {
     justify-content: center;
     gap: 20px;
     margin-top: 20px;
+}
+
+.table_input{
+    max-width: 110px;
 }
