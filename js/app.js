@@ -1,7 +1,9 @@
 var app = angular.module('bevasarlas', ['ngRoute']);
+
 let kategoria = document.querySelector('#kategoria');
 let termekekdropdown = document.querySelector('#termek');
-let tablazat = document.querySelector('#lista');
+let listak_dropdown = document.querySelector('#listak');
+let list_name = document.querySelector("#list_name")
 let mennyiseg = document.querySelector('#mennyiseg');
 let egysegar = document.querySelector('#egysegar');
 let osszes = document.querySelector('#osszes');
@@ -10,6 +12,7 @@ let osszes = document.querySelector('#osszes');
 app.run(function($rootScope){
 
     $rootScope.hozzadotTermek = [];
+    $rootScope.listak = [];
     
     $rootScope.ossz_termekek = [];
     $rootScope.egyedikategoria =[];
@@ -22,14 +25,15 @@ app.run(function($rootScope){
         $rootScope.ossz_termekek.forEach(termek => {
             if (!$rootScope.egyedikategoria.includes(termek.category)) {
                 $rootScope.egyedikategoria.push(termek.category);
-                   
             }
         });
         $rootScope.$apply();
-    }); 
+    });
 
-
-    
+    axios.get('http://localhost:3000/lista').then(res=>{
+        $rootScope.listak = res.data
+        $rootScope.$apply();
+    })
 
     $rootScope.termekekdropdownfeltoltes = function(){
         termekekdropdown.innerHTML = '';
@@ -47,8 +51,6 @@ app.run(function($rootScope){
 
                 });
                 
-                
-                
                 $rootScope.prodcut.forEach(product => {
                         
                     let option = document.createElement("option");
@@ -60,7 +62,6 @@ app.run(function($rootScope){
                 $rootScope.arfeltoltes();
             }
         })
-    
 
     $rootScope.arfeltoltes = function() {
         
@@ -114,37 +115,64 @@ app.run(function($rootScope){
         });
         return total;
     };
-    
 
     $rootScope.removeItem = function(index) {
         $rootScope.hozzadotTermek.splice(index, 1);
         $rootScope.arfeltoltes(); 
     }
+
     $rootScope.ListaTorlese = function() {
         $rootScope.hozzadotTermek = [];
     };
     
 
     $rootScope.ListaMentesAdatbazisba = function() {
-        
         let data = {
-            items: $rootScope.hozzadotTermek 
-        };
-    
-        
-        axios.post('http://localhost:3000/lista', data)
-            .then(function(response) {
-                
-                console.log("Data saved successfully:", response.data);
-                
-                $rootScope.hozzadotTermek = [];
-                
-            })
-            .catch(function(error) {
+            name: list_name.value
+        }
+        let list_id = 0
 
-                console.error("Error saving data:", error);
+        axios.post('http://localhost:3000/lista', data)
+        .then(res => {
+            list_id = res.data.insertId
+            
+            $rootScope.hozzadotTermek.forEach(termek => {
+                let data = {
+                    termek_id: termek.id,
+                    count: termek.mennyiseg
+                }
+
+                axios.post(`http://localhost:3000/lista/${list_id}`,data).then(res=>{
+                    console.log(res)
+                })
             });
+        })
     };
+
+    $rootScope.load_list = function(){
+        
+        let selected_id = listak_dropdown.value
+        console.log(selected_id)
+        $rootScope.hozzadotTermek = []
+        axios.get(`http://localhost:3000/lista/${selected_id}`).then(res=>{
+            console.log(res.data)
+            
+            res.data.forEach(adat => {
+                axios.get(`http://localhost:3000/termekek/id/${adat.termek_id}`).then(res=>{
+                    let listas_termek = {
+                        id: res.id,
+                        category: res.data.category,
+                        termek: res.data.productname,
+                        mennyiseg: adat.count,
+                        ar: res.data.price,
+                        osszeg: Number(res.data.price) * Number(adat.count)
+                    }
+                    $rootScope.hozzadotTermek.push(listas_termek)
+                })
+            });
+            console.log($rootScope.hozzadotTermek)
+        })
+    }
     
 }});
 

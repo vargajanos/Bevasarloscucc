@@ -29,12 +29,12 @@
             
 
             <div class="mennyiseg">
-                
                 <input id="mennyiseg" type="number" min="1" ng-model="mennyisegValue" ng-change="arfeltoltes()">
             </div>
             
             
-        
+            
+            
 
             <div class="egysegér">  
                 <output type="number" id="egysegar"> Még nincs termék</output> 
@@ -46,11 +46,18 @@
             </div>
 
             <button class="hozzaad" id="hozzaad" ng-click="tablazattoltes()">+</button>
-
+            lista
 
         </div>
 
-        <h2 class="listah2">Lista</h2>
+        
+        <div>
+            <h2 class="listah2">Lista</h2>
+            <select name="listak" id="listak">
+                <option ng-repeat="x in listak" value="{{x.id}}">{{x.name}}</option>
+            </select>
+            <button ng-click="load_list()">Load</button>
+        </div>
 
         <div style="overflow-x:auto;">
             <table id="tablazat">
@@ -86,7 +93,7 @@
     <div class="gomboklent">
         <button ng-click="ListaTorlese()">Lista törlése</button>
 
-
+        <input id="list_name" type="text">
         <button ng-click="ListaMentesAdatbazisba()">Mentés</button>
 
 
