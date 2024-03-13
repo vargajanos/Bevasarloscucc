@@ -136,7 +136,27 @@ app.run(function($rootScope){
         $rootScope.arfeltoltes(); 
     }
     
+    $rootScope.ListaMentesAdatbazisba = function() {
+        
+        let data = {
+            items: $rootScope.hozzadotTermek 
+        };
+    
+        
+        axios.post('http://localhost:3000/lista', data)
+            .then(function(response) {
+                
+                console.log("Data saved successfully:", response.data);
+                
+                $rootScope.hozzadotTermek = [];
+                
+            })
+            .catch(function(error) {
 
+                console.error("Error saving data:", error);
+            });
+    };
+    
 });
 
 app.directive('ngChangeManual', function() {

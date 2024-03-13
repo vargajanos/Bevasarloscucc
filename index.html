@@ -23,7 +23,6 @@
             
             <div class="termek">
             <select name="termek" id="termek" ng-model="selectedProduct" ng-change-manual>
-                
                 <option ng-repeat="termek in prodcut" value="{{termek.id}}">{{termek.productname}}</option>
             </select>
             </div>
@@ -87,7 +86,8 @@
     <div class="gomboklent">
         <button>Lista törlése</button>
 
-        <button>Mentés</button>
+        <button ng-click="ListaMentesAdatbazisba()">Mentés</button>
+
 
         <label for="fizetendo">Fizetendő:</label>
         <output id="fizetendo">{{ OsszesSzamitas() }} Ft</output>
