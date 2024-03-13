@@ -32,7 +32,8 @@ app.run(function($rootScope){
     
 
     $rootScope.termekekdropdownfeltoltes = function(){
-        $rootScope.removeOptions(termekekdropdown);
+        termekekdropdown.innerHTML = '';
+
     
         let selectedCategory = kategoria.value;
     
@@ -60,12 +61,6 @@ app.run(function($rootScope){
             }
         })
     
-    
-
-
-    $rootScope.removeOptions = function(selectElement) {
-        selectElement.innerHTML = '';
-    }
 
     $rootScope.arfeltoltes = function() {
         
@@ -84,19 +79,16 @@ app.run(function($rootScope){
         }
     }
     
-   $rootScope.updatePrice = function(item) {
-
+    $rootScope.updatePrice = function(item) {
+        
+        let product = $rootScope.ossz_termekek.find(p => p.id == item.id);
     
-        let product = $rootScope.termekek.find(p => {
-
-
-            return p.id == item.id;
-        });
-    
+        if (product) {
             item.ar = product.price;
             item.osszeg = item.mennyiseg * product.price;
-
+        }
     };
+    
     
     $rootScope.tablazattoltes = function() {
 
