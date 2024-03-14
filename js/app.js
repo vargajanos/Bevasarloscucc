@@ -153,22 +153,31 @@ app.run(function($rootScope){
         
         let selected_id = listak_dropdown.value
         console.log(selected_id)
-        $rootScope.hozzadotTermek = []
+
         axios.get(`http://localhost:3000/lista/${selected_id}`).then(res=>{
-            console.log(res.data)
+            
             
             res.data.forEach(adat => {
-                axios.get(`http://localhost:3000/termekek/id/${adat.termek_id}`).then(res=>{
-                    let listas_termek = {
-                        id: res.id,
-                        category: res.data.category,
-                        termek: res.data.productname,
-                        mennyiseg: adat.count,
-                        ar: res.data.price,
-                        osszeg: Number(res.data.price) * Number(adat.count)
+                $rootScope.ossz_termekek.forEach(termek => {
+                    if(termek.id == adat.termek_id){
+                        let listas_termek = {
+                            id: termek.id,
+                            category: termek.category,
+                            termek: termek.productname,
+                            mennyiseg: adat.count,
+                            ar: termek.price,
+                            osszeg: Number(termek.price) * Number(adat.count)
+                        }
+                        $rootScope.hozzadotTermek.push(listas_termek)
                     }
-                    $rootScope.hozzadotTermek.push(listas_termek)
+                });
+                
+                /*
+                axios.get(`http://localhost:3000/termekek/id/${adat.termek_id}`).then(res=>{
+                    console.log(res.data)
+                    
                 })
+                */
             });
             console.log($rootScope.hozzadotTermek)
         })
