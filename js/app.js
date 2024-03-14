@@ -61,7 +61,8 @@ app.run(function($rootScope){
 
                 $rootScope.arfeltoltes();
             }
-        })
+        })    
+    }
 
     $rootScope.arfeltoltes = function() {
         
@@ -159,11 +160,6 @@ app.run(function($rootScope){
         })
     };
 
-
-
-
-    
-}
 $rootScope.load_list = function(){
         
     let selected_id = listak_dropdown.value
