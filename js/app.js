@@ -131,6 +131,7 @@ app.run(function($rootScope){
             if (listak_dropdown.options[i].value == selected_id)
             listak_dropdown.remove(i);
         }
+        alert("Lista törölve :)")
     };
     
 
@@ -160,43 +161,45 @@ app.run(function($rootScope){
 
 
 
-    $rootScope.load_list = function(){
-        
-        let selected_id = listak_dropdown.value
-        console.log(selected_id)
-        $rootScope.hozzadotTermek = []
-        axios.get(`http://localhost:3000/lista/${selected_id}`).then(res=>{
-            
-            
-            res.data.forEach(adat => {
-                $rootScope.ossz_termekek.forEach(termek => {
-                    if(termek.id == adat.termek_id){
-                        let listas_termek = {
-                            id: termek.id,
-                            category: termek.category,
-                            termek: termek.productname,
-                            mennyiseg: adat.count,
-                            ar: termek.price,
-                            osszeg: Number(termek.price) * Number(adat.count)
-                        }
-                        $rootScope.hozzadotTermek.push(listas_termek)
-                    }
-                });
-                
-                /*
-                axios.get(`http://localhost:3000/termekek/id/${adat.termek_id}`).then(res=>{
-                    console.log(res.data)
-                    
-                })
-                */
-                $rootScope.$apply();
-            });
-            console.log($rootScope.hozzadotTermek)
-        })
-        
-    }
+
     
-}});
+}
+$rootScope.load_list = function(){
+        
+    let selected_id = listak_dropdown.value
+    console.log(selected_id)
+    $rootScope.hozzadotTermek = []
+    axios.get(`http://localhost:3000/lista/${selected_id}`).then(res=>{
+        
+        
+        res.data.forEach(adat => {
+            $rootScope.ossz_termekek.forEach(termek => {
+                if(termek.id == adat.termek_id){
+                    let listas_termek = {
+                        id: termek.id,
+                        category: termek.category,
+                        termek: termek.productname,
+                        mennyiseg: adat.count,
+                        ar: termek.price,
+                        osszeg: Number(termek.price) * Number(adat.count)
+                    }
+                    $rootScope.hozzadotTermek.push(listas_termek)
+                }
+            });
+            
+            /*
+            axios.get(`http://localhost:3000/termekek/id/${adat.termek_id}`).then(res=>{
+                console.log(res.data)
+                
+            })
+            */
+            $rootScope.$apply();
+        });
+        console.log($rootScope.hozzadotTermek)
+    })
+    
+}
+});
 
 app.directive('ngChangeManual', function() {
     return {
