@@ -96,9 +96,18 @@ app.post("/lista/:pk", (req, res)=>{
 })
 
 // DELETE lista tartalma by PK
-app.delete("/lista/:pk", (req, res)=>{
+app.delete("/kapcsolo/:pk", (req, res)=>{
     let pk = req.params.pk
     pool.query(`DELETE FROM kapcsolo WHERE lista_id=?`, pk, (error, results)=>{
+        if (error) throw res.send(error);
+        
+        res.send(results)
+    });
+})
+
+app.delete("/lista/:pk", (req, res)=>{
+    let pk = req.params.pk
+    pool.query(`DELETE FROM lista WHERE id=?`, pk, (error, results)=>{
         if (error) throw res.send(error);
         
         res.send(results)

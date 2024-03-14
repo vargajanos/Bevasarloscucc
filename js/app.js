@@ -123,6 +123,14 @@ app.run(function($rootScope){
 
     $rootScope.ListaTorlese = function() {
         $rootScope.hozzadotTermek = [];
+        let selected_id = listak_dropdown.value
+        axios.delete(`http://localhost:3000/kapcsolo/${selected_id}`)
+        axios.delete(`http://localhost:3000/lista/${selected_id}`)
+        
+        for (var i=0; i<listak_dropdown.length; i++) {
+            if (listak_dropdown.options[i].value == selected_id)
+            listak_dropdown.remove(i);
+        }
     };
     
 
@@ -146,14 +154,17 @@ app.run(function($rootScope){
                     console.log(res)
                 })
             });
+            $rootScope.$apply()
         })
     };
+
+
 
     $rootScope.load_list = function(){
         
         let selected_id = listak_dropdown.value
         console.log(selected_id)
-
+        $rootScope.hozzadotTermek = []
         axios.get(`http://localhost:3000/lista/${selected_id}`).then(res=>{
             
             
@@ -178,9 +189,11 @@ app.run(function($rootScope){
                     
                 })
                 */
+                $rootScope.$apply();
             });
             console.log($rootScope.hozzadotTermek)
         })
+        
     }
     
 }});
